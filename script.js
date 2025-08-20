@@ -1,4 +1,4 @@
-const API_KEY = '$2a$10$TekhcFArELlKIhuwegM9eertOLEIjadu1Mk5gxyRQxB1v2nho/Kt2';
+const API_KEY = '$2a$10$qB4L4EbvOZoyE2nwruanfOTWAJpV93/vcvEMnIwIXEayb89oAPcP6';
 const BIN_ID = '68a51a47d0ea881f405dc3dc';
 const API_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
 
@@ -23,6 +23,9 @@ function getCurrentTime() {
 async function loadChatData() {
     try {
         showLoading(true);
+        
+        console.log('Loading data from:', API_URL + '/latest');
+        
         const response = await fetch(API_URL + '/latest', {
             method: 'GET',
             headers: {
@@ -31,12 +34,19 @@ async function loadChatData() {
             }
         });
         
+        console.log('Load response status:', response.status);
+        
         if (response.ok) {
             const result = await response.json();
+            console.log('Loaded data:', result);
             chatData = result.record || { users: [] };
+        } else {
+            const errorData = await response.text();
+            console.error('Load error:', response.status, errorData);
+            chatData = { users: [] };
         }
     } catch (error) {
-        console.error('Load error:', error);
+        console.error('Load error details:', error);
         chatData = { users: [] };
     } finally {
         showLoading(false);
@@ -46,21 +56,36 @@ async function loadChatData() {
 async function saveChatData() {
     try {
         showLoading(true);
+        
+        console.log('Saving data:', chatData);
+        console.log('Using API Key:', API_KEY);
+        console.log('Using Bin ID:', BIN_ID);
+        
         const response = await fetch(API_URL, {
             method: 'PUT',
             headers: {
                 'X-Master-Key': API_KEY,
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-Bin-Meta': 'false'
             },
             body: JSON.stringify(chatData)
         });
         
+        console.log('Response status:', response.status);
+        console.log('Response headers:', response.headers);
+        
+        const responseData = await response.text();
+        console.log('Response data:', responseData);
+        
         if (!response.ok) {
-            throw new Error('Save failed');
+            throw new Error(`HTTP ${response.status}: ${responseData}`);
         }
+        
+        console.log('Save successful!');
+        
     } catch (error) {
-        console.error('Save error:', error);
-        alert('Failed to save message. Please try again.');
+        console.error('Save error details:', error);
+        alert(`Failed to save message: ${error.message}\n\nPlease check:\n1. API Key is correct\n2. Bin exists and is accessible\n3. Network connection`);
     } finally {
         showLoading(false);
     }
