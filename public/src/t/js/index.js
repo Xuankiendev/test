@@ -68,19 +68,19 @@ function ShowToast() {
     }
     // SET URL FACEBOOK
     $('#Facebook').click(function() {
-        OpenUrl('https://www.facebook.com/100035052735014');
+        OpenUrl('https://www.facebook.com/vuxuankiendzvcl');
     });
       // SET URL YOUTUBE
     $('#Youtube').click(function() {
-        OpenUrl('https://www.youtube.com/channel/UCiSP9FWliPIwG-w59dJdilQ');
+        OpenUrl('https://www.youtube.com/kienduyendang');
     });
     // SET URL DISCORDS
-    $('#Discord').click(function() {
-        OpenUrl('https://dsc.bio/WusThanhDieu');
+    $('#Telegram').click(function() {
+        OpenUrl('https://t.me/maybe_i_miss_you');
     });
       // SET URL INSTAGRAM
     $('#Instagram').click(function() {
-        OpenUrl('https://instagram.com/vuongsondieu2k2/');
+        OpenUrl('https://instagram.com/_vxksobad/');
     });
   });
   
