@@ -22,6 +22,7 @@
       @keyframes pulse{from{opacity:1;transform:scale(1)}to{opacity:0.25;transform:scale(0.75)}}
       a{color:#a690d6;text-decoration:none}
       @media(max-width:768px){.container{margin-top:15vh}h1{font-size:20px}}
+      .success{color:lightgreen;font-size:18px;margin-top:15px;display:none}
     </style>
     <div class="container">
       <div class="logo"></div>
@@ -30,16 +31,12 @@
       <div class="info"><strong>Power by <a href="https://xuankien.qzz.io/" target="_blank">VXK1997Dev</a></strong></div>
       <h2 style="color:silver;font-size:20px;margin:30px 0 10px">- Waiting Security -</h2>
       <div class="pulse"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+      <div class="success" id="successMsg">Xác thực thành công, đang chuyển hướng...</div>
     </div>
   </body>`;
 
   setTimeout(()=>{
-    document.body.innerHTML = `
-      <div style="display:flex;justify-content:center;align-items:center;height:100vh;flex-direction:column;font-family:Arial;color:#fff;background:#111;">
-        <h1 style="color:lightgreen">Xác thực thành công</h1>
-        <p style="color:silver">Đang chuyển hướng...</p>
-      </div>
-    `;
+    document.getElementById("successMsg").style.display = "block";
     setTimeout(()=>document.documentElement.innerHTML=originalHTML,2000);
   }, Math.random()*2000+3000);
 })();
