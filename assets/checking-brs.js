@@ -1,16 +1,45 @@
 (function(){
-  var ua = navigator.userAgent || "";
-  var lang = navigator.language || (navigator.languages && navigator.languages[0]) || "";
-  var isBot = /HeadlessChrome|bot|crawler|spider|crawling/i.test(ua);
-  var noLang = !lang;
-  var badUA = ua === "" || !ua.includes("Mozilla");
-
-  if (isBot || noLang || badUA) {
-    window.location.href = "https://example.com"; 
-    return;
-  }
-
   var originalHTML = document.documentElement.innerHTML;
+  
+  function checkUserAgent() {
+    var ua = navigator.userAgent.toLowerCase();
+    var suspicious = [
+      'bot', 'crawler', 'spider', 'scraper', 'headless', 'phantom', 
+      'selenium', 'automated', 'python', 'curl', 'wget', 'httpclient',
+      'okhttp', 'requests', 'urllib', 'postman', 'insomnia'
+    ];
+    return suspicious.some(keyword => ua.includes(keyword));
+  }
+  
+  function checkBrowserFeatures() {
+    return !navigator.webdriver && 
+           typeof navigator.languages !== 'undefined' && 
+           navigator.languages.length > 0 &&
+           screen.width > 0 && 
+           screen.height > 0 &&
+           typeof window.chrome !== 'undefined' || 
+           typeof window.safari !== 'undefined' || 
+           navigator.userAgent.includes('Firefox');
+  }
+  
+  function checkTimingAttack() {
+    var start = performance.now();
+    for(var i = 0; i < 100000; i++) Math.random();
+    return (performance.now() - start) > 10;
+  }
+  
+  function isBot() {
+    return checkUserAgent() || 
+           !checkBrowserFeatures() || 
+           !checkTimingAttack() ||
+           navigator.webdriver === true ||
+           window.callPhantom ||
+           window._phantom ||
+           window.Buffer ||
+           window.emit ||
+           window.spawn;
+  }
+  
   document.documentElement.innerHTML = `
   <head>
     <meta charset="UTF-8">
@@ -40,4 +69,21 @@
       <h1>Security Check Point</h1>
       <div class="info">Đang Kiểm Tra Trình Duyệt Của Bạn<br>Vui lòng đợi giây lát</div>
       <div class="info"><strong>Power by <a href="https://xuankien.qzz.io/" target="_blank">VXK1997Dev</a></strong></div>
-      <h2 style="color
+      <h2 style="color:silver;font-size:20px;margin:30px 0 10px">- Waiting Security -</h2>
+      <div class="pulse"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+      <div class="success" id="successMsg"><b>✅ Xác thực thành công.</b></div>
+    </div>
+  </body>`;
+
+  setTimeout(function(){
+    if(isBot()) {
+      window.location.href = 'https://cloudflare.com';
+      return;
+    }
+    
+    document.getElementById("successMsg").style.display = "block";
+    setTimeout(function(){
+      document.documentElement.innerHTML = originalHTML;
+    }, 2000);
+  }, Math.random() * 2000 + 3000);
+})();
