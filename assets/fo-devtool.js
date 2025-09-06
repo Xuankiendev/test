@@ -151,3 +151,6 @@ class FuckDevtool {
     }
   }
 }
+
+const devtoolProtection = new FuckDevtool();
+devtoolProtection.init();
