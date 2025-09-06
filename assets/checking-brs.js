@@ -1,18 +1,12 @@
 (function(){
   var ua = navigator.userAgent || "";
   var lang = navigator.language || (navigator.languages && navigator.languages[0]) || "";
-  var badUA = ua === "" || !ua.includes("Mozilla");
-  var badLang = !lang || !navigator.languages || navigator.languages.length === 0;
   var isBot = /HeadlessChrome|bot|crawler|spider|crawling/i.test(ua);
-  var isWebdriver = navigator.webdriver;
-  var noPlugins = navigator.plugins && navigator.plugins.length === 0;
-  var weakCPU = navigator.hardwareConcurrency && navigator.hardwareConcurrency < 2;
-  var noMem = typeof navigator.deviceMemory === "undefined";
-  var badScreen = !screen.width || !screen.height || screen.width < 300 || screen.height < 300;
-  var badWindow = window.outerWidth === 0 || window.outerHeight === 0;
+  var noLang = !lang;
+  var badUA = ua === "" || !ua.includes("Mozilla");
 
-  if (badUA || badLang || isBot || isWebdriver || noPlugins || weakCPU || noMem || badScreen || badWindow) {
-    window.location.href = "https://example.com";
+  if (isBot || noLang || badUA) {
+    window.location.href = "https://example.com"; 
     return;
   }
 
@@ -46,13 +40,4 @@
       <h1>Security Check Point</h1>
       <div class="info">Đang Kiểm Tra Trình Duyệt Của Bạn<br>Vui lòng đợi giây lát</div>
       <div class="info"><strong>Power by <a href="https://xuankien.qzz.io/" target="_blank">VXK1997Dev</a></strong></div>
-      <h2 style="color:silver;font-size:20px;margin:30px 0 10px">- Waiting Security -</h2>
-      <div class="pulse"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-      <div class="success" id="successMsg">Xác thực thành công, đang chuyển hướng...</div>
-    </div>
-  </body>`;
-  setTimeout(()=>{
-    document.getElementById("successMsg").style.display = "block";
-    setTimeout(()=>document.documentElement.innerHTML=originalHTML,2000);
-  }, Math.random()*2000+3000);
-})();
+      <h2 style="color
