@@ -5,15 +5,14 @@
 <hr><center>nginx</center>
 <script src ="https://xuankien.qzz.io/assets/fo-devtool.js"></script>
 <script>
-// Initialize the FuckDevtool class
 const Config = new FuckDevTool({
-    interval: 2000, // Check every 200 milliseconds
-    redirectURL: '//example.com', // Custom redirect URL
-    debug: true, // Enable debug mode to log messages
-    preventDevTools: true,  // Enable blocking of DevTools shortcuts
-    checkBrowser: true,  // Enable browser checking
-    enableDebugger: true,  // Enable debugger for DevTools detection
-    checkShortcuts: true  // Enable checking and blocking DevTools-related shortcuts
+    interval: 2000,
+    redirectURL: '/f12-cailon',
+    debug: true,
+    preventDevTools: true,
+    checkBrowser: true,
+    enableDebugger: true,
+    checkShortcuts: true
 });
 Config.init();
 </script>
