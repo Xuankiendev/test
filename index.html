@@ -3,6 +3,18 @@
 <body>
 <center><h1>503 Service Unavailable</h1></center>
 <hr><center>nginx</center>
-<script src ="https://xuankien.qzz.io/assets/fo-devtool.js"></script>
+<script src ="./assets/fo-devtool.js"></script>
+<script>
+// Initialize the FuckDevtool class
+const Config = new FuckDevtool({
+    interval: 200, // Check every 200 milliseconds
+    redirectURL: '//example.com', // Custom redirect URL
+    debug: true, // Enable debug mode to log messages
+    preventDevTools: true,  // Enable blocking of DevTools shortcuts
+    checkBrowser: true,  // Enable browser checking
+    enableDebugger: true,  // Enable debugger for DevTools detection
+    checkShortcuts: true  // Enable checking and blocking DevTools-related shortcuts
+});
+Config.init();
 </body>
 </html>
