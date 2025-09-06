@@ -31,7 +31,7 @@
       <div class="info"><strong>Power by <a href="https://xuankien.qzz.io/" target="_blank">VXK1997Dev</a></strong></div>
       <h2 style="color:silver;font-size:20px;margin:30px 0 10px">- Waiting Security -</h2>
       <div class="pulse"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-      <div class="success" id="successMsg">Xác thực thành công, đang chuyển hướng...</div>
+      <div class="success" id="successMsg"><b>✅ Xác thực thành công.</b></div>
     </div>
   </body>`;
   setTimeout(()=>{
