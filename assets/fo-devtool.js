@@ -1,14 +1,8 @@
 class FuckDevtool {
-  constructor(options = {}) {
-    this.interval = options.interval || 100;
-    this.redirectURL = options.redirectURL || "https://cloudflare.com";
-    this.debug = options.debug || false;
-    this.preventDevTools = options.preventDevTools !== false;
-    this.checkBrowser = options.checkBrowser !== false;
-    this.enableDebugger = options.enableDebugger || false;
-    this.checkShortcuts = options.checkShortcuts !== false;
+  constructor() {
+    this.interval = 100;
+    this.redirectURL = "https://cloudflare.com";
     this._intervalID = null;
-    this.#checkConfig();
   }
 
   #generateRandomValue(windowObj) {
@@ -17,13 +11,13 @@ class FuckDevtool {
 
   #detectDevTools(windowObj) {
     let userAgent = navigator.userAgent.toLowerCase();
-    let supportedBrowsers = ["chrome", "coc coc", "safari"].some(browser => 
+    let supportedBrowsers = ["chrome", "coc coc", "safari", "firefox", "edge"].some(browser => 
       userAgent.includes(browser)
     );
 
     if (!supportedBrowsers) {
-      this.#showBrowserNotSupported();
-      return false;
+      this.#showWarningMessage();
+      return true;
     }
 
     if (windowObj.chrome) {
@@ -50,110 +44,104 @@ class FuckDevtool {
           devToolsDetected = true;
         }
       } catch (error) {
-        if (this.debug) {
-          console.error("Error In Catch:", error);
-        }
+        devToolsDetected = true;
       }
       return devToolsDetected;
     }
 
-    if (this.enableDebugger) {
-      let startTime = new Date();
-      let endTime = new Date();
-      if (endTime - startTime > 100) {
-        return true;
-      }
+    let startTime = performance.now();
+    debugger;
+    let endTime = performance.now();
+    if (endTime - startTime > 100) {
+      return true;
     }
 
     return false;
   }
 
   #preventKeyboardShortcuts() {
-    if (this.checkShortcuts) {
-      document.addEventListener("contextmenu", event => {
+    document.addEventListener("contextmenu", event => {
+      event.preventDefault();
+    });
+
+    document.addEventListener("keydown", event => {
+      let keyPressed = event.key.toLowerCase();
+      let isCtrlOrCmd = event.ctrlKey || event.metaKey;
+      
+      if ((isCtrlOrCmd && ["f12", "u", "s", "p", "i"].includes(keyPressed)) || 
+          event.keyCode === 123) {
         event.preventDefault();
-      });
-
-      document.addEventListener("keydown", event => {
-        let keyPressed = event.key.toLowerCase();
-        let isCtrlOrCmd = event.ctrlKey || event.metaKey;
-        
-        if ((isCtrlOrCmd && ["f12", "u", "s", "p", "i"].includes(keyPressed)) || 
-            event.keyCode === 123) {
-          event.preventDefault();
-        }
-      });
-    }
-  }
-
-  #logMessage(message) {
-    if (this.debug) {
-      console.clear();
-      console.log(
-        `%c ✨ [Fuck-Devtool] %c ${message} `,
-        "color: #ffffff; background: rgb(255, 112, 67); padding:5px 0; border-radius: 5px 0 0 5px;",
-        "background:rgba(66, 66, 66, 0.85); padding:5px 0; border-radius: 0 5px 5px 0;"
-      );
-    }
-  }
-
-  #checkConfig() {
-    if (typeof window !== 'undefined' && !window.fuckDevtoolConfig) {
-      this.#injectConfigScript();
-    }
-  }
-
-  #injectConfigScript() {
-    let scriptElement = document.createElement('script');
-    scriptElement.textContent = `
-const config = {
-  interval: 100,
-  redirectURL: "https://cloudflare.com",
-  debug: false,
-  preventDevTools: true,
-  checkBrowser: true,
-  enableDebugger: false,
-  checkShortcuts: true
-};
-
-window.fuckDevtoolConfig = config;
-
-if (typeof FuckDevtool !== 'undefined') {
-  const devtoolProtection = new FuckDevtool(config);
-  devtoolProtection.init();
-}
-    `;
-    document.head.appendChild(scriptElement);
+        this.#showWarningMessage();
+      }
+    });
   }
 
   checkForDevTools() {
     if (!window) return false;
 
-    if (this.checkBrowser) {
-      let devToolsFound = this.#detectDevTools(window);
-      if (devToolsFound) {
-        this.#logMessage("DevTools Detected!");
-        window.location.replace(this.redirectURL);
-        this.stop();
-      }
+    let devToolsFound = this.#detectDevTools(window);
+    if (devToolsFound) {
+      this.#showWarningMessage();
+      this.stop();
     }
     return false;
   }
 
-  #showBrowserNotSupported() {
+  #showWarningMessage() {
     document.body.innerHTML = `
-      <h1 style="text-align: center; margin-top: 20%; font-size: 40px; color: red; pointer-events: none; user-select: none">
-        Browser Not Supported
-      </h1>`;
+      <div style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #ff4757, #ff3838);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: Arial, sans-serif;
+        z-index: 999999;
+      ">
+        <div style="
+          text-align: center;
+          color: white;
+          animation: shake 0.5s ease-in-out infinite alternate;
+        ">
+          <h1 style="
+            font-size: 48px;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            user-select: none;
+            pointer-events: none;
+          ">
+            Quay Dau La Bo
+          </h1>
+          <p style="
+            font-size: 24px;
+            margin: 20px 0;
+            user-select: none;
+            pointer-events: none;
+          ">
+            Mau Tat Dev Tool
+          </p>
+        </div>
+      </div>
+      <style>
+        @keyframes shake {
+          0% { transform: translateX(0px); }
+          100% { transform: translateX(10px); }
+        }
+      </style>`;
+    
+    setTimeout(() => {
+      window.location.replace(this.redirectURL);
+    }, 2000);
   }
 
   init() {
-    this.#logMessage("Initializing Fuck-Devtool...");
     this.checkForDevTools();
     this._intervalID = setInterval(() => this.checkForDevTools(), this.interval);
-    if (this.preventDevTools) {
-      this.#preventKeyboardShortcuts();
-    }
+    this.#preventKeyboardShortcuts();
   }
 
   stop() {
@@ -161,17 +149,5 @@ if (typeof FuckDevtool !== 'undefined') {
       clearInterval(this._intervalID);
       this._intervalID = null;
     }
-  }
-
-  debounce(func, delay) {
-    let timeoutId;
-    return (...args) => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-      timeoutId = setTimeout(() => {
-        func.apply(this, args);
-      }, delay);
-    };
   }
 }
