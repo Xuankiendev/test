@@ -178,7 +178,7 @@ font-family: Concert One;
     /* transition: all .25s cubic-bezier(.08, .59, .29, .99); */
     -webkit-tap-highlight-color: transparent;
 }
-.Discord {
+.Telegram {
   position: relative;
   background: rgb(88,101,242); 
   background: linear-gradient(139deg, 
