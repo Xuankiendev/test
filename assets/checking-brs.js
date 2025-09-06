@@ -22,7 +22,7 @@
       @keyframes pulse{from{opacity:1;transform:scale(1)}to{opacity:0.25;transform:scale(0.75)}}
       a{color:#a690d6;text-decoration:none}
       @media(max-width:768px){.container{margin-top:15vh}h1{font-size:20px}}
-      .success{color:lightgreen;font-size:18px;margin-top:15px;display:none}
+      .success{color:#fff;font-size:18px;margin-top:15px;display:none}
     </style>
     <div class="container">
       <div class="logo"></div>
@@ -34,7 +34,6 @@
       <div class="success" id="successMsg">Xác thực thành công, đang chuyển hướng...</div>
     </div>
   </body>`;
-
   setTimeout(()=>{
     document.getElementById("successMsg").style.display = "block";
     setTimeout(()=>document.documentElement.innerHTML=originalHTML,2000);
