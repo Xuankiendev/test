@@ -86,13 +86,13 @@ function ShowToast() {
   
 function Alerts() {
   Swal.fire({
-    title: '𝙉𝙤𝙩𝙞𝙛𝙞𝙘𝙖𝙩𝙞𝙤𝙣 !',
-    text: '=>> 𝙒𝙚𝙡𝙘𝙤𝙢𝙚 𝙃𝙪𝙣𝙣𝙞𝙚 𝙗𝙖𝙘𝙠 𝙩𝙤 𝙩𝙝𝙚 𝙝𝙤𝙢𝙚𝙥𝙖𝙜𝙚 🐬 <<=',
+    title: 'Notification !',
+    text: '-> Welcome To My Personal Website <-,
     showConfirmButton: false
   });
 }
 // Skill Language
-$('.skill-per').each(function() {
+$''.skill-per').each(function() {
     var $this=$(this);
     var per=$this.attr('per');
     $this.css("width", per + '%');
@@ -412,4 +412,5 @@ function __GetInfo() {
     }
     setTimeout(geoinfo, 5000);
 }
+
 
