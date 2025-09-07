@@ -87,12 +87,12 @@ function ShowToast() {
 function Alerts() {
   Swal.fire({
     title: 'Notification !',
-    text: '-> Welcome To My Personal Website <-,
+    text: '-> Welcome To My Personal Page :3 <-',
     showConfirmButton: false
   });
 }
 // Skill Language
-$''.skill-per').each(function() {
+$('.skill-per').each(function() {
     var $this=$(this);
     var per=$this.attr('per');
     $this.css("width", per + '%');
@@ -412,5 +412,3 @@ function __GetInfo() {
     }
     setTimeout(geoinfo, 5000);
 }
-
-
