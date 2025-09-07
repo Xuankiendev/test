@@ -26,16 +26,16 @@ function CheckFps() {
 }
 // TIEU SU CHỮ CHẠY
 let typed=new Typed(".GioiThieu", {
-  strings: ["","Hey brother, I'm a Designer.", "I like website design =]] "],
+  strings: ["","Hey brother, I'm a Designer.", "I like website design =]]"],
   typeSpeed: 95,
   backSpeed: 75,
   loop: true
 })
 // MUSIC PLAY
 const MusicList=[
-    "//thanhdieu.com/files/Em-Nào-Có-Tội.mp3",
-    "//thanhdieu.com/files/Anh-Đã-Quen-Với-Cô-Đơn.mp3",
-    "//thanhdieu.com/files/Về-Bên-Anh.mp3",
+    "//files.catbox.moe/95im93.aac",
+    "//files.catbox.moe/ta5th4.aac",
+    "//files.catbox.moe/sxbj95.aac",
 ];
 let t=parseInt(localStorage.getItem('td')) || Math.floor(Math.random() * MusicList.length);
 const audio=new Audio(MusicList[t]);
@@ -412,3 +412,4 @@ function __GetInfo() {
     }
     setTimeout(geoinfo, 5000);
 }
+
