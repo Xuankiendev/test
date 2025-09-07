@@ -55,40 +55,46 @@
   function checkUserAgent() {
     var userAgent = navigator.userAgent.toLowerCase();
     var suspiciousKeywords = [
-      'bot', 'crawler', 'spider', 'scraper', 'headless', 'phantom', 
-      'selenium', 'automated', 'python', 'curl', 'wget', 'httpclient',
-      'okhttp', 'requests', 'urllib', 'postman', 'insomnia'
+      'headless', 'phantom', 'selenium', 'automated', 'python-requests',
+      'curl/', 'wget/', 'httpclient', 'okhttp', 'urllib', 'scrapy'
     ];
     return suspiciousKeywords.some(keyword => userAgent.includes(keyword));
   }
   
   function checkBrowserFeatures() {
-    return !navigator.webdriver && 
-           typeof navigator.languages !== 'undefined' && 
-           navigator.languages.length > 0 &&
-           screen.width > 0 && 
-           screen.height > 0 &&
-           (typeof window.chrome !== 'undefined' || 
-            typeof window.safari !== 'undefined' || 
-            navigator.userAgent.includes('Firefox'));
+    try {
+      return typeof navigator.languages !== 'undefined' && 
+             navigator.languages.length > 0 &&
+             screen.width > 0 && 
+             screen.height > 0 &&
+             typeof document !== 'undefined' &&
+             typeof window.history !== 'undefined';
+    } catch(e) {
+      return false;
+    }
   }
   
   function checkTimingAttack() {
-    var startTime = performance.now();
-    for(var i = 0; i < 100000; i++) Math.random();
-    return (performance.now() - startTime) > 10;
+    try {
+      var startTime = performance.now();
+      for(var i = 0; i < 50000; i++) Math.random();
+      return (performance.now() - startTime) > 5;
+    } catch(e) {
+      return true;
+    }
   }
   
   function isBot() {
-    return checkUserAgent() || 
-           !checkBrowserFeatures() || 
-           !checkTimingAttack() ||
-           navigator.webdriver === true ||
-           window.callPhantom ||
-           window._phantom ||
-           window.Buffer ||
-           window.emit ||
-           window.spawn;
+    var suspiciousCount = 0;
+    
+    if(checkUserAgent()) suspiciousCount++;
+    if(!checkBrowserFeatures()) suspiciousCount++;
+    if(!checkTimingAttack()) suspiciousCount++;
+    if(navigator.webdriver === true) suspiciousCount++;
+    if(window.callPhantom || window._phantom) suspiciousCount++;
+    if(window.Buffer && typeof window.process !== 'undefined') suspiciousCount++;
+    
+    return suspiciousCount >= 2;
   }
   
   function showSecurityCheck() {
